@@ -4,7 +4,10 @@ import com.practice.kopringsecurityjwt.common.authority.TokenInfo
 import com.practice.kopringsecurityjwt.common.dto.BaseResponse
 import com.practice.kopringsecurityjwt.domain.member.dto.LoginDto
 import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoRequest
+import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoResponse
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -31,5 +34,14 @@ class MemberController(
     fun login(@RequestBody @Valid loginDto: LoginDto): BaseResponse<TokenInfo> {
         val tokenInfo = memberService.login(loginDto)
         return BaseResponse(data = tokenInfo)
+    }
+
+    /**
+     * 내 정보 보기
+     */
+    @GetMapping("/info/{id}")
+    fun searchMyInfo(@PathVariable id: Long): BaseResponse<MemberDtoResponse> {
+        val response = memberService.searchMyInfo(id)
+        return BaseResponse(data = response)
     }
 }
