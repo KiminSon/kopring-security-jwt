@@ -1,5 +1,6 @@
 package com.practice.kopringsecurityjwt.domain.member
 
+import com.practice.kopringsecurityjwt.common.exception.InvalidInputException
 import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoRequest
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
@@ -16,18 +17,10 @@ class MemberService(
     fun signUp(memberDtoRequest: MemberDtoRequest): String {
         var member: Member? = memberRepository.findByLoginId(memberDtoRequest.loginId)
         if (member != null) {
-            return "이미 등록된 ID 입니다."
+            throw InvalidInputException("loginId", "이미 등록된 ID 입니다.")
         }
 
-        member = Member(
-            null,
-            memberDtoRequest.loginId,
-            memberDtoRequest.password,
-            memberDtoRequest.name,
-            memberDtoRequest.birthDate,
-            memberDtoRequest.gender,
-            memberDtoRequest.email
-        )
+        member = memberDtoRequest.toEntity()
 
         memberRepository.save(member)
 

@@ -3,6 +3,7 @@ package com.practice.kopringsecurityjwt.domain.member.dto
 import com.practice.kopringsecurityjwt.common.annotation.ValidEnum
 import com.practice.kopringsecurityjwt.common.status.Gender
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.practice.kopringsecurityjwt.domain.member.Member
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
@@ -64,4 +65,7 @@ data class MemberDtoRequest(
 
     private fun String.toLocalDate(): LocalDate =
         LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+    fun toEntity(): Member =
+        Member(id, loginId, password, name, birthDate, gender, email)
 }

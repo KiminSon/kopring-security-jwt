@@ -1,5 +1,6 @@
 package com.practice.kopringsecurityjwt.domain.member
 
+import com.practice.kopringsecurityjwt.common.dto.BaseResponse
 import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoRequest
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,7 +17,8 @@ class MemberController(
     * 회원가입
     * */
     @PostMapping("/signup")
-    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): String {
-        return memberService.signUp(memberDtoRequest)
+    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
+        val resultMsg: String = memberService.signUp(memberDtoRequest)
+        return BaseResponse(message = resultMsg)
     }
 }
