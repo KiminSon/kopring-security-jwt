@@ -1,5 +1,6 @@
 package com.practice.kopringsecurityjwt.common.service
 
+import com.practice.kopringsecurityjwt.common.dto.CustomUser
 import com.practice.kopringsecurityjwt.domain.member.Member
 import com.practice.kopringsecurityjwt.domain.member.MemberRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -21,7 +22,8 @@ class CustomUserDetailsService(
             ?: throw UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다.")
 
     private fun createUserDetails(member: Member): UserDetails =
-        User(
+        CustomUser(
+            member.id!!,
             member.loginId,
             passwordEncoder.encode(member.password),
             member.memberRole!!.map { SimpleGrantedAuthority("ROLE_${it.role}") }

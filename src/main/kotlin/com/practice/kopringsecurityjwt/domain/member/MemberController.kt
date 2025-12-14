@@ -2,10 +2,12 @@ package com.practice.kopringsecurityjwt.domain.member
 
 import com.practice.kopringsecurityjwt.common.authority.TokenInfo
 import com.practice.kopringsecurityjwt.common.dto.BaseResponse
+import com.practice.kopringsecurityjwt.common.dto.CustomUser
 import com.practice.kopringsecurityjwt.domain.member.dto.LoginDto
 import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoRequest
 import com.practice.kopringsecurityjwt.domain.member.dto.MemberDtoResponse
 import jakarta.validation.Valid
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -39,9 +41,14 @@ class MemberController(
     /**
      * 내 정보 보기
      */
-    @GetMapping("/info/{id}")
-    fun searchMyInfo(@PathVariable id: Long): BaseResponse<MemberDtoResponse> {
-        val response = memberService.searchMyInfo(id)
+    @GetMapping("/info")
+    fun searchMyInfo(): BaseResponse<MemberDtoResponse> {
+        val userId = (SecurityContextHolder
+            .getContext()
+            .authentication
+            .principal as CustomUser)
+            .userId
+        val response = memberService.searchMyInfo(userId)
         return BaseResponse(data = response)
     }
 }
